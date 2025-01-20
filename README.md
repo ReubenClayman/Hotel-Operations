@@ -25,12 +25,50 @@ Write a query to return data matching this description. You must match all colum
 |target_guests	|Nominal. The primary type of guest that is expected to use the hotel. Can be one of 'Leisure' or 'Business'. Missing values should be replaced with 'Leisure'.|
 
 
+**SQL Code**
+```sql
+SELECT 
+    id,
+    COALESCE(location, 'Unknown') AS location,
+    CASE
+        WHEN total_rooms BETWEEN 1 AND 400 THEN total_rooms
+        ELSE 100
+    END AS total_rooms,
+    CASE
+        WHEN staff_count IS NOT NULL THEN staff_count
+        ELSE total_rooms * 1.5
+    END AS staff_count,
+    CASE
+        WHEN opening_date = '-' THEN '2023'
+        WHEN opening_date BETWEEN '2000' AND '2023' THEN opening_date
+        ELSE '2023'
+    END AS opening_date,
+    CASE
+        WHEN target_guests IS NULL THEN 'Leisure'
+        WHEN LOWER(target_guests) LIKE 'b%' THEN 'Business'
+        ELSE target_guests END AS target_guests
+FROM 
+    public.branch;
+
+```
 ## Task 2
 The Head of Operations wants to know whether there is a difference in time taken to respond to a customer request in each hotel. They already know that different services take different lengths of time.
 
 - Calculate the average and maximum duration for each branch and service.
 - Your output should include the columns service_id, branch_id, avg_time_taken and max_time_taken.
 - Values should be rounded to two decimal places where appropriate.
+
+**SQL Code**
+
+```sql
+
+SELECT service_id, 
+		branch_id, 
+		ROUND(AVG(time_taken), 2) AS avg_time_taken, 
+		MAX(time_taken) AS max_time_taken
+FROM public.request
+GROUP BY service_id, branch_id;
+```
 
 ## Task 3
 The management team want to target improvements in Meal and Laundry service in Europe (EMEA) and Latin America (LATAM).
@@ -42,9 +80,36 @@ The management team want to target improvements in Meal and Laundry service in E
 
 Use the original branch table, not the output of task 1.
 
+**SQL Code**
+```sql
+SELECT
+    s.description,
+    b.id,
+    b.location,
+    r.id AS request_id,
+    r.rating
+FROM
+    request r
+    JOIN branch b ON b.id = r.branch_id
+    JOIN service s ON r.service_id = s.id
+WHERE
+    s.description IN ('Meal', 'Laundry')
+    AND b.location IN ('EMEA', 'LATAM');
+```
+
 ## Task 4
 So that you can take a more detailed look at the lowest performing hotels, you want to get service and branch information where the average rating for the branch and service combination is lower than 4.5 - the target set by management.
 
 Your query should: 
 - return the service_id and branch_id,
 - the average rating (avg_rating), rounded to 2 decimal places.
+
+**SQL Code***
+```sql
+SELECT service_id,
+  branch_id,
+  ROUND(AVG(rating),2) AS avg_rating
+FROM public.request
+GROUP BY service_id, branch_id
+HAVING AVG(rating) < 4.5;
+```
