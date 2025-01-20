@@ -15,19 +15,14 @@ It is known that there are some issues with the branch table, and the data team 
 
 Write a query to return data matching this description. You must match all column names and description criteria.
 
-Column Name	Criteria
-- id	Nominal. The unique identifier of the hotel.
-- Missing values are not possible due to the database structure.
-- location	Nominal. The location of the particular hotel. One of four possible values, 'EMEA', 'NA', 'LATAM' and 'APAC'.
-- Missing values should be replaced with “Unknown”.
-- total_rooms	Discrete. The total number of rooms in the hotel. Must be a positive integer between 1 and 400.
-- Missing values should be replaced with the default number of rooms, 100.
-- staff_count	Discrete. The number of staff employeed in the hotel service department.
-- Missing values should be replaced with the total_rooms multiplied by 1.5.
-- opening_date	Discrete. The year in which the hotel opened. This can be any value between 2000 and 2023.
-- Missing values should be replaced with 2023.
-- target_guests	Nominal. The primary type of guest that is expected to use the hotel. Can be one of 'Leisure' or 'Business'.
-- Missing values should be replaced with 'Leisure'.
+| Column Name | Criteria                                                |
+|-------------|---------------------------------------------------------|
+|id|	Nominal. The unique identifier of the hotel. Missing values are not possible due to the database structure.|
+| location	| Nominal. The location of the particular hotel. One of four possible values, 'EMEA', 'NA', 'LATAM' and 'APAC'. Missing values should be replaced with “Unknown”.
+| total_rooms	| Discrete. The total number of rooms in the hotel. Must be a positive integer between 1 and 400. Missing values should be replaced with the default number of rooms, 100.|
+| staff_count |	Discrete. The number of staff employeed in the hotel service department. Missing values should be replaced with the total_rooms multiplied by 1.5.|
+| opening_date	| Discrete. The year in which the hotel opened. This can be any value between 2000 and 2023. Missing values should be replaced with 2023.|
+|target_guests	|Nominal. The primary type of guest that is expected to use the hotel. Can be one of 'Leisure' or 'Business'. Missing values should be replaced with 'Leisure'.|
 
 
 ## Task 2
